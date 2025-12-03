@@ -119,4 +119,22 @@ DEVELOPER'S PORTFOLIO/
    http://127.0.0.1:5500/
    ```
 
+
 ---
+🌐 Deployment (GitHub Pages)
+
+Push your project to GitHub
+
+Go to Settings → Pages
+
+Under “Source” select:
+
+Branch: main  
+Folder: / (root)
+
+
+Click Save
+
+Your portfolio will be live at:
+
+[https://nikhilfendre.github.io/DEVELOPER-S-PORTFOLIO/]
