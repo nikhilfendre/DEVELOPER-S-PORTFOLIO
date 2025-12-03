@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nikhil Fendre — Developer Portfolio</title>
+  <meta name="description" content="Developer portfolio built using HTML, CSS, and JavaScript." />
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home">Nikhil Fendre.</a>
+
+      <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="primaryNav">
+        <span class="hamburger"></span>
+      </button>
+
+      <nav id="primaryNav" class="nav">
+        <ul class="nav-list">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero container">
+      <div class="hero-text">
+        <h1>Hi, I'm <span class="accent">Nikhil</span> — a Software Developer</h1>
+        <p>Building clean and accessible web apps using HTML, CSS & JavaScript.</p>
+
+        <p class="cta-row">
+          <a class="btn" href="#projects">See Projects</a>
+          <a class="btn ghost" href="#contact">Contact Me</a>
+        </p>
+      </div>
+
+      <div class="hero-image">
+        <img src="assets/avatar.jpg" alt="Nikhil's Photo">
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="container about">
+      <h2>About me</h2>
+      <p>I’m an intern developer working on web development projects and learning new technologies.</p>
+
+      <ul class="profile-facts">
+        <li><strong>Location:</strong> India</li>
+        <li><strong>Role:</strong> Software Development Intern</li>
+      </ul>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="container skills">
+      <h2>Skills</h2>
+
+      <div class="skill-grid">
+        <div class="skill">
+          <h3>HTML</h3>
+          <div class="skill-bar"><span style="width:95%"></span></div>
+        </div>
+        <div class="skill">
+          <h3>CSS</h3>
+          <div class="skill-bar"><span style="width:90%"></span></div>
+        </div>
+        <div class="skill">
+          <h3>JavaScript</h3>
+          <div class="skill-bar"><span style="width:85%"></span></div>
+        </div>
+        <div class="skill">
+          <h3>React</h3>
+          <div class="skill-bar"><span style="width:70%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="container projects">
+      <h2>Projects</h2>
+
+      <div class="project-filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="frontend">Frontend</button>
+        <button class="filter" data-filter="fullstack">Fullstack</button>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid">
+
+        <!-- PROJECT 1 -->
+        <article class="project-card" data-type="frontend" tabindex="0">
+          <img src="assets/project1.png" alt="Project 1 Screenshot">
+          <div class="project-content">
+            <h3>Portfolio Website</h3>
+            <p>A modern responsive portfolio.</p>
+
+            <div class="project-actions">
+              <button class="btn small view-project"
+                data-title="Portfolio Website"
+                data-desc="A static portfolio built with HTML, CSS, JavaScript."
+                data-demo="#"
+                data-github="#">
+                View
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 2 -->
+        <article class="project-card" data-type="fullstack" tabindex="0">
+          <img src="assets/project2.png" alt="Project 2 Screenshot">
+          <div class="project-content">
+            <h3>Drowsiness_Detection_System</h3>
+            <p>A Drowsiness Detection System is built primarily with Python using the OpenCV and dlib libraries for real-time computer vision</p>
+
+            <div class="project-actions">
+              <button class="btn small view-project"
+                data-title="Task Manager API"
+                data-desc="A Node.js + Express API with MongoDB."
+                data-demo="#"
+                data-github="#">
+                View
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <div id="projectModal" class="modal" hidden aria-hidden="true">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+
+        <p>
+          <a id="modalDemo" class="btn small" href="#" target="_blank">Live Demo</a>
+          <a id="modalGithub" class="btn small ghost" href="#" target="_blank">GitHub</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <section id="contact" class="container contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:nikhilfendre046@gmail.com">nikhilfendre046@gmail.com</a></p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Nikhil Fendre</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
