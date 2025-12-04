@@ -35,14 +35,14 @@
       <a class="brand" href="#home">Nikhil Fendre</a>
 
       <div class="header-right">
-        <button id="themeToggle" class="theme-toggle" aria-pressed="false">🌙</button>
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Toggle theme">🌙</button>
 
-        <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="primaryNav">
-          <span class="hamburger"></span>
+        <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">
+          <span class="hamburger" aria-hidden="true"></span>
         </button>
       </div>
 
-      <nav id="primaryNav" class="nav">
+      <nav id="primaryNav" class="nav" aria-label="Primary navigation">
         <ul class="nav-list">
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
@@ -67,10 +67,30 @@
           <a class="btn" href="#projects">See Projects</a>
           <a class="btn ghost" href="#contact">Contact Me</a>
         </p>
+
+        <div class="hero-stats" aria-hidden="true">
+          <div><strong>3+</strong><span>Projects</span></div>
+          <div><strong>HTML • CSS • JS</strong><span>Stack</span></div>
+          <div><strong>Remote</strong><span>Available</span></div>
+        </div>
       </div>
 
+      <!-- Avatar wrapper with SVG ring + image -->
       <div class="hero-image">
-        <img src="assets/avatar.jpg" alt="Nikhil Fendre portrait" loading="lazy" width="300" height="300">
+        <div class="avatar-wrap" aria-hidden="true">
+          <svg class="avatar-ring" viewBox="0 0 300 300" role="img" aria-label="decorative gradient ring">
+            <defs>
+              <linearGradient id="ringGradient" x1="0" x2="1">
+                <stop offset="0" stop-color="#06b6d4"/>
+                <stop offset="1" stop-color="#7c3aed"/>
+              </linearGradient>
+            </defs>
+            <circle cx="150" cy="150" r="140" stroke="url(#ringGradient)" stroke-width="10" fill="none" />
+          </svg>
+
+          <!-- actual profile image centered above the ring -->
+          <img src="assets/avatar.jpg" alt="Nikhil Fendre portrait" class="avatar" loading="lazy" width="240" height="240">
+        </div>
       </div>
     </section>
 
@@ -128,7 +148,9 @@
 
         <!-- PROJECT 1 -->
         <article class="project-card" data-type="frontend" tabindex="0">
-          <img src="assets/project1.png" alt="Portfolio website screenshot" loading="lazy">
+          <div class="project-media">
+            <img src="assets/project1.png" alt="Portfolio website screenshot" loading="lazy">
+          </div>
 
           <div class="project-content">
             <h3>Portfolio Website</h3>
@@ -143,14 +165,16 @@
                 View
               </button>
 
-              <a class="link" href="https://github.com/nikhilfendre/DEVELOPER-S-PORTFOLIO" target="_blank">Code</a>
+              <a class="link" href="https://github.com/nikhilfendre/DEVELOPER-S-PORTFOLIO" target="_blank" rel="noopener">Code</a>
             </div>
           </div>
         </article>
 
         <!-- PROJECT 2 -->
         <article class="project-card" data-type="fullstack" tabindex="0">
-          <img src="assets/project2.png" alt="Drowsiness detection system screenshot" loading="lazy">
+          <div class="project-media">
+            <img src="assets/project2.png" alt="Drowsiness detection system screenshot" loading="lazy">
+          </div>
 
           <div class="project-content">
             <h3>Drowsiness Detection System</h3>
@@ -160,12 +184,12 @@
               <button class="btn small view-project"
                 data-title="Drowsiness Detection System"
                 data-desc="Real-time system detecting user drowsiness using OpenCV and dlib facial landmarks."
-                data-demo="#"
-                data-github="#">
+                data-demo="https://github.com/nikhilfendre/Drowsiness_Detection_System"
+                data-github="https://github.com/nikhilfendre/Drowsiness_Detection_System">
                 View
               </button>
 
-              <a class="link" href="#" target="_blank">Code</a>
+              <a class="link" href="https://github.com/nikhilfendre/Drowsiness_Detection_System" target="_blank" rel="noopener">Code</a>
             </div>
           </div>
         </article>
@@ -176,14 +200,14 @@
     <!-- MODAL -->
     <div id="projectModal" class="modal" hidden aria-hidden="true">
       <div class="modal-content">
-        <button class="modal-close" data-modal-close>&times;</button>
+        <button class="modal-close" data-modal-close aria-label="Close">&times;</button>
 
         <h3 id="modalTitle"></h3>
         <p id="modalDesc"></p>
 
-        <p>
-          <a id="modalDemo" class="btn small" href="#" target="_blank">Live Demo</a>
-          <a id="modalGithub" class="btn small ghost" href="#" target="_blank">GitHub</a>
+        <p class="modal-links">
+          <a id="modalDemo" class="btn small" href="#" target="_blank" rel="noopener">Live Demo</a>
+          <a id="modalGithub" class="btn small ghost" href="#" target="_blank" rel="noopener">GitHub</a>
         </p>
       </div>
     </div>
@@ -193,10 +217,9 @@
       <h2>Contact</h2>
       <p>Email: <a href="mailto:nikhilfendre046@gmail.com">nikhilfendre046@gmail.com</a></p>
       <p>Connect on 
-  <a href="https://www.linkedin.com/in/nikhil-fendre-030594348?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener">LinkedIn</a> · 
-  <a href="https://github.com/nikhilfendre" target="_blank" rel="noopener">GitHub</a>
-</p>
-
+        <a href="https://www.linkedin.com/in/nikhil-fendre-030594348/" target="_blank" rel="noopener">LinkedIn</a> · 
+        <a href="https://github.com/nikhilfendre" target="_blank" rel="noopener">GitHub</a>
+      </p>
     </section>
 
   </main>
@@ -207,6 +230,9 @@
       <p>© <span id="year"></span> Nikhil Fendre</p>
     </div>
   </footer>
+
+  <!-- back to top -->
+  <button id="backTop" class="back-top" aria-label="Back to top" title="Back to top">↑</button>
 
   <script src="script.js" defer></script>
 </body>
