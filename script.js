@@ -1,10 +1,10 @@
-/* script.js */
+/* script.js - interactions: nav, theme, reveal, modal, filters, back-top, avatar ring touch */
 document.addEventListener('DOMContentLoaded', () => {
-  // footer year
+  // year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // MOBILE NAV
+  // nav toggle
   const navToggle = document.getElementById('navToggle');
   const primaryNav = document.getElementById('primaryNav');
   if (navToggle && primaryNav) {
@@ -19,52 +19,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
   }
 
-  // THEME (persist)
-  const themeToggle = document.getElementById('themeToggle');
-  function applyTheme(theme) {
-    if (theme === 'dark') {
-      document.body.classList.add('theme-dark');
-      themeToggle && (themeToggle.textContent = '☀️', themeToggle.setAttribute('aria-pressed','true'));
-    } else {
-      document.body.classList.remove('theme-dark');
-      themeToggle && (themeToggle.textContent = '🌙', themeToggle.setAttribute('aria-pressed','false'));
-    }
-  }
-  const saved = localStorage.getItem('site-theme');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
-  themeToggle && themeToggle.addEventListener('click', () => {
-    const current = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
-    const next = current === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    localStorage.setItem('site-theme', next);
-  });
+  // theme toggle
+const themeToggle = document.getElementById('themeToggle');
 
-  // smooth scroll for anchor links
+function applyTheme(theme) {
+  if (theme === "light") {
+    document.body.classList.remove("theme-dark");
+    document.body.classList.add("theme-light");
+    themeToggle.textContent = "🌙";
+    themeToggle.setAttribute("aria-pressed", "false");
+  } else {
+    document.body.classList.remove("theme-light");
+    document.body.classList.add("theme-dark");
+    themeToggle.textContent = "☀️";
+    themeToggle.setAttribute("aria-pressed", "true");
+  }
+}
+
+// Load theme from storage or default
+const savedTheme = localStorage.getItem("theme") || "dark";
+applyTheme(savedTheme);
+
+// Click to toggle
+themeToggle.addEventListener("click", () => {
+  const current = document.body.classList.contains("theme-dark") ? "dark" : "light";
+  const next = current === "dark" ? "light" : "dark";
+  applyTheme(next);
+  localStorage.setItem("theme", next);
+});
+
+
+  // smooth scroll for internal links
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const href = a.getAttribute('href');
-      if (href === '#' || href === '#') return;
-      const target = document.querySelector(href);
-      if (target) {
+      if (!href || href === '#') return;
+      const t = document.querySelector(href);
+      if (t) {
         e.preventDefault();
-        target.scrollIntoView({behavior:'smooth', block:'start'});
+        t.scrollIntoView({behavior:'smooth', block:'start'});
       }
     });
   });
 
-  // reveal animation using IntersectionObserver
+  // reveal animations
   const reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
-    const obs = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(ent => {
+        if (ent.isIntersecting) {
+          ent.target.classList.add('revealed');
+          obs.unobserve(ent.target);
         }
       });
     }, {threshold: 0.12});
-    reveals.forEach(r => obs.observe(r));
+    reveals.forEach(r => io.observe(r));
   } else {
     reveals.forEach(r => r.classList.add('revealed'));
   }
@@ -86,21 +95,26 @@ document.addEventListener('DOMContentLoaded', () => {
     filterProjects(btn.getAttribute('data-filter'));
   }));
 
-  // modal logic
+  // modal
   const modal = document.getElementById('projectModal');
   const modalTitle = document.getElementById('modalTitle');
   const modalDesc = document.getElementById('modalDesc');
   const modalDemo = document.getElementById('modalDemo');
   const modalGithub = document.getElementById('modalGithub');
 
-  function openModal() {
+  function openModal(title, desc, demo, github) {
     if (!modal) return;
+    modalTitle.textContent = title || '';
+    modalDesc.textContent = desc || '';
+    if (modalDemo) modalDemo.href = demo || '#';
+    if (modalGithub) modalGithub.href = github || '#';
     modal.hidden = false;
     modal.style.display = 'grid';
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-    const firstFocusable = modal.querySelector('button, [href], input, textarea, select');
-    firstFocusable && firstFocusable.focus();
+    // focus
+    const focusable = modal.querySelector('button, [href], input, textarea');
+    focusable && focusable.focus();
   }
   function closeModal() {
     if (!modal) return;
@@ -112,27 +126,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.view-project').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const t = btn.dataset.title || 'Project';
-      const d = btn.dataset.desc || '';
+      const title = btn.dataset.title || 'Project';
+      const desc = btn.dataset.desc || '';
       const demo = btn.dataset.demo || '#';
       const gh = btn.dataset.github || '#';
-      modalTitle && (modalTitle.textContent = t);
-      modalDesc && (modalDesc.textContent = d);
-      modalDemo && (modalDemo.href = demo);
-      modalGithub && (modalGithub.href = gh);
-      openModal();
+      openModal(title, desc, demo, gh);
       e.preventDefault();
     });
   });
 
-  // close modal handlers
-  modal && modal.addEventListener('click', (ev) => {
-    const content = modal.querySelector('.modal-content');
-    if (!content.contains(ev.target)) closeModal();
-  });
-  modal && modal.querySelectorAll('[data-modal-close], .modal-close').forEach(btn => btn.addEventListener('click', closeModal));
+  if (modal) {
+    modal.addEventListener('click', (ev) => {
+      const content = modal.querySelector('.modal-content');
+      if (!content.contains(ev.target)) closeModal();
+    });
+    modal.querySelectorAll('[data-modal-close], .modal-close').forEach(b => b.addEventListener('click', closeModal));
+  }
   window.addEventListener('keydown', (ev) => {
     if ((ev.key === 'Escape' || ev.key === 'Esc') && modal && !modal.hidden) closeModal();
   });
 
+  // back-to-top button (safe check)
+  const backTop = document.getElementById('backTop');
+  if (backTop) {
+    // show/hide on scroll
+    const onScroll = () => {
+      backTop.style.display = (window.scrollY > 500) ? 'block' : 'none';
+    };
+    window.addEventListener('scroll', onScroll);
+    onScroll(); // initialize
+
+    backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  }
+
+  // accessibility: allow Enter on project-card to open modal
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const btn = card.querySelector('.view-project');
+        if (btn) btn.click();
+      }
+    });
+  });
+
+  // -------------------------------
+  // Avatar ring touch & keyboard support
+  // toggles 'ring-hover' class to show morph/neon effects on mobile/keyboard
+  // -------------------------------
+  (function avatarRingTouch() {
+    const wrap = document.querySelector('.avatar-wrap');
+    if (!wrap) return;
+
+    // make keyboard-focusable
+    if (!wrap.hasAttribute('tabindex')) wrap.setAttribute('tabindex', '0');
+
+    let touchTimeout = null;
+    const clearTouch = () => {
+      if (touchTimeout) {
+        clearTimeout(touchTimeout);
+        touchTimeout = null;
+      }
+    };
+
+    wrap.addEventListener('touchstart', (e) => {
+      // add class to trigger CSS hover styles on touch devices
+      wrap.classList.add('ring-hover');
+      clearTouch();
+      touchTimeout = setTimeout(() => wrap.classList.remove('ring-hover'), 2200);
+    }, {passive: true});
+
+    // keyboard accessibility: Enter or Space toggles the effect briefly
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        wrap.classList.add('ring-hover');
+        clearTouch();
+        touchTimeout = setTimeout(() => wrap.classList.remove('ring-hover'), 2200);
+      }
+    });
+
+    // optional: remove class if user clicks elsewhere
+    document.addEventListener('click', (ev) => {
+      if (!wrap.contains(ev.target)) wrap.classList.remove('ring-hover');
+    });
+  })();
+
 });
+
+
